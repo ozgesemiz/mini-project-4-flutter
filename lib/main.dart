@@ -35,11 +35,11 @@ class RoboMunchHome extends StatefulWidget {
 }
 
 const String kLocalBackendUrl = 'http://192.168.1.102:8000';
-const String kCloudBackendUrl = 'http://YOUR_AWS_IP:8080';
+const String kCloudBackendUrl = 'http://13.61.176.214:8080';
 
 class _RoboMunchHomeState extends State<RoboMunchHome> {
   final String _localUrl = 'http://192.168.1.102:8000';
-  final String _cloudUrl = 'http://YOUR_AWS_IP:8080';
+  final String _cloudUrl = 'http://13.61.176.214:8080';
 
   final TextEditingController _promptController = TextEditingController();
   final TextEditingController _chatController   = TextEditingController();
@@ -101,7 +101,7 @@ class _RoboMunchHomeState extends State<RoboMunchHome> {
         Uri.parse('$_localUrl/generate-image'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'prompt': prompt}),
-      ).timeout(const Duration(seconds: 120));
+      ).timeout(const Duration(seconds: 600));
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         setState(() {
@@ -170,7 +170,7 @@ class _RoboMunchHomeState extends State<RoboMunchHome> {
           _statusMessage  = 'Grayscale conversion done!';
         });
       } else {
-        setState(() => _statusMessage = 'Cloud error: \${response.statusCode}');
+        setState(() => _statusMessage = 'Cloud error: ' + response.statusCode.toString());
       }
     } catch (e) {
       setState(() => _statusMessage = 'Cloud connection error: \$e');
