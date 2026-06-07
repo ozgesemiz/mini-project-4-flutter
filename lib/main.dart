@@ -34,9 +34,12 @@ class RoboMunchHome extends StatefulWidget {
   State<RoboMunchHome> createState() => _RoboMunchHomeState();
 }
 
+const String kLocalBackendUrl = 'http://192.168.1.102:8000';
+const String kCloudBackendUrl = 'http://YOUR_AWS_IP:8080';
+
 class _RoboMunchHomeState extends State<RoboMunchHome> {
-  static const String localBackendUrl = 'http://192.168.1.102:8000';
-  static const String cloudBackendUrl = 'http://YOUR_AWS_IP:8080';
+  final String _localUrl = 'http://192.168.1.102:8000';
+  final String _cloudUrl = 'http://YOUR_AWS_IP:8080';
 
   final TextEditingController _promptController = TextEditingController();
   final TextEditingController _chatController   = TextEditingController();
@@ -95,7 +98,7 @@ class _RoboMunchHomeState extends State<RoboMunchHome> {
     });
     try {
       final response = await http.post(
-        Uri.parse('\$localBackendUrl/generate-image'),
+        Uri.parse('$_localUrl/generate-image'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'prompt': prompt}),
       ).timeout(const Duration(seconds: 120));
@@ -127,7 +130,7 @@ class _RoboMunchHomeState extends State<RoboMunchHome> {
     _scrollToBottom();
     try {
       final response = await http.post(
-        Uri.parse('\$localBackendUrl/chat'),
+        Uri.parse('$_localUrl/chat'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'message': message}),
       ).timeout(const Duration(seconds: 60));
@@ -156,7 +159,7 @@ class _RoboMunchHomeState extends State<RoboMunchHome> {
     });
     try {
       final response = await http.post(
-        Uri.parse('\$cloudBackendUrl/convert/grayscale'),
+        Uri.parse('$_cloudUrl/convert/grayscale'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'image': base64Encode(_generatedImage!)}),
       ).timeout(const Duration(seconds: 30));
@@ -194,8 +197,8 @@ class _RoboMunchHomeState extends State<RoboMunchHome> {
       backgroundColor: const Color(0xFF0F0F1A),
       appBar: AppBar(
         backgroundColor: const Color(0xFF1A1A2E),
-        title: Row(
-          children: const [
+        title: const Row(
+          children: [
             Text('ROBO',  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20)),
             Text('MUNCH', style: TextStyle(color: Color(0xFFE94560), fontWeight: FontWeight.bold, fontSize: 20)),
             SizedBox(width: 8),
