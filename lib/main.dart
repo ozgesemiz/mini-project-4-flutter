@@ -170,7 +170,7 @@ class _RoboMunchHomeState extends State<RoboMunchHome> {
           _statusMessage  = 'Grayscale conversion done!';
         });
       } else {
-        setState(() => _statusMessage = 'Cloud error: ' + response.statusCode.toString());
+        setState(() => _statusMessage = 'Cloud error: ${response.statusCode}');
       }
     } catch (e) {
       setState(() => _statusMessage = 'Cloud connection error: \$e');
